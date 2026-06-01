@@ -1,0 +1,11 @@
+{
+  "name": "Wireframes IHM S6",
+  "description": "Genera los 4 wireframes de baja fidelidad para la Práctica 6 – UAE",
+  "code": "plugin.js",
+  "icon": "icon.png",
+  "permissions": [
+    "content:read",
+    "content:write",
+    "allow:downloads"
+  ]
+}

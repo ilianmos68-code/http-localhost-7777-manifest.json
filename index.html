@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframes IHM S6</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #1e1e2e;
+    color: #e0e0e0;
+    padding: 16px;
+    font-size: 13px;
+  }
+  h1 { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+  p.sub { font-size: 11px; color: #888; margin-bottom: 16px; }
+  .btn-group { display: flex; flex-direction: column; gap: 8px; }
+  button {
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    transition: opacity 0.15s;
+  }
+  button:hover { opacity: 0.85; }
+  .btn-all { background: #7c6af7; color: #fff; font-size: 14px; padding: 12px; text-align: center; }
+  .btn-p { background: #2d2d44; color: #ccc; border: 1px solid #3d3d5a; }
+  .btn-p span { display: block; font-size: 10px; font-weight: 400; color: #888; margin-top: 2px; }
+  .status {
+    margin-top: 14px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: none;
+  }
+  .status.ok { background: #1a3a2a; color: #5dca8f; display: block; }
+  .status.err { background: #3a1a1a; color: #e07070; display: block; }
+  .status.loading { background: #2a2a3a; color: #aaa; display: block; }
+  hr { border: none; border-top: 1px solid #2d2d44; margin: 14px 0; }
+  .note { font-size: 11px; color: #666; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<h1>Wireframes IHM S6</h1>
+<p class="sub">Asistente de Escritura Académica · UAE</p>
+
+<div class="btn-group">
+  <button class="btn-all" onclick="generate('all')">
+    ▶ Generar las 4 pantallas
+  </button>
+  <hr>
+  <button class="btn-p" onclick="generate('p1')">
+    P1 – Inicio / Landing
+    <span>Hero · CTA · Cards de funcionalidades</span>
+  </button>
+  <button class="btn-p" onclick="generate('p2')">
+    P2 – Chat Activo
+    <span>Sidebar · Burbujas · Input · Toolbar</span>
+  </button>
+  <button class="btn-p" onclick="generate('p3')">
+    P3 – Historial
+    <span>Búsqueda · Tabla · Paginación</span>
+  </button>
+  <button class="btn-p" onclick="generate('p4')">
+    P4 – Configuración
+    <span>Perfil · Idioma · Toggle · Guardar</span>
+  </button>
+</div>
+
+<div id="status" class="status"></div>
+
+<hr>
+<p class="note">
+  Asegúrate de estar en la página<br>
+  <strong style="color:#aaa">01 – Wireframes</strong> antes de generar.
+</p>
+
+<script>
+  const status = document.getElementById("status");
+
+  function generate(screen) {
+    status.className = "status loading";
+    const labels = {
+      all: "Generando las 4 pantallas...",
+      p1: "Generando P1 – Inicio...",
+      p2: "Generando P2 – Chat Activo...",
+      p3: "Generando P3 – Historial...",
+      p4: "Generando P4 – Configuración...",
+    };
+    status.textContent = labels[screen] || "Generando...";
+
+    parent.postMessage({ type: "generate", screen }, "*");
+  }
+
+  window.addEventListener("message", (evt) => {
+    const msg = evt.data;
+    if (msg.type === "done") {
+      status.className = "status ok";
+      const labels = {
+        all: "✅ Las 4 pantallas fueron creadas.",
+        p1: "✅ P1 – Inicio creado.",
+        p2: "✅ P2 – Chat Activo creado.",
+        p3: "✅ P3 – Historial creado.",
+        p4: "✅ P4 – Configuración creado.",
+      };
+      status.textContent = labels[msg.screen] || "✅ Listo.";
+    }
+    if (msg.type === "error") {
+      status.className = "status err";
+      status.textContent = "❌ Error: " + msg.message;
+    }
+  });
+</script>
+</body>
+</html>
